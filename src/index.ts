@@ -20,21 +20,33 @@ import {
     ITexture, TweakpaneUiPlugin, AssetManagerBasicPopupPlugin, CanvasSnipperPlugin,
 
     IViewerPlugin,
-
+    mobileAndTabletCheck,
     // Color, // Import THREE.js internals
     // Texture, // Import THREE.js internals
 } from "webgi";
 import "./styles.css";
 
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+
+gsap.registerPlugin(ScrollTrigger)
+
 async function setupViewer(){
+
+    const isMobile = mobileAndTabletCheck()
 
     // Initialize the viewer
     const viewer = new ViewerApp({
         canvas: document.getElementById('webgi-canvas') as HTMLCanvasElement,
+        useRgbm: false
     })
 
     // Add some plugins
     const manager = await viewer.addPlugin(AssetManagerPlugin)
+    const camera = viewer.scene.activeCamera
+    const position = camera.position
+    const target = camera.target
 
     // Add a popup(in HTML) with download progress when any asset is downloading.
     await viewer.addPlugin(AssetManagerBasicPopupPlugin)
@@ -58,12 +70,12 @@ async function setupViewer(){
     await addBasePlugins(viewer)
 
     // Add more plugins not available in base, like CanvasSnipperPlugin which has helpers to download an image of the canvas.
-    await viewer.addPlugin(CanvasSnipperPlugin)
+    //await viewer.addPlugin(CanvasSnipperPlugin)
 
     // This must be called once after all plugins are added.
     viewer.renderer.refreshPipeline()
 
-    await manager.addFromPath("./assets/classic-watch.glb")
+    await manager.addFromPath("./assets/datsun.glb")
 
     // Load an environment map if not set in the glb file
     // await viewer.scene.setEnvironment(
@@ -73,9 +85,13 @@ async function setupViewer(){
     // );
 
     // Add some UI for tweak and testing.
-    const uiPlugin = await viewer.addPlugin(TweakpaneUiPlugin)
+    //const uiPlugin = await viewer.addPlugin(TweakpaneUiPlugin)
     // Add plugins to the UI to see their settings.
-    uiPlugin.setupPlugins<IViewerPlugin>(TonemapPlugin, CanvasSnipperPlugin)
+    //uiPlugin.setupPlugins<IViewerPlugin>(TonemapPlugin, CanvasSnipperPlugin)
+
+    function setUpScrollAnimation() {
+        const tl = gsap.timeline();
+    }
 
 }
 
