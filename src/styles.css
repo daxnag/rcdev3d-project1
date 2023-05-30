@@ -124,6 +124,7 @@ section {
   margin: auto;
   display: flex;
   z-index: 1;
+  opacity: 0;
 }
 
 ul {
@@ -166,6 +167,7 @@ ul li {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
+  opacity: 0;
 }
 
 .third-container .content {
@@ -193,6 +195,7 @@ ul li {
   z-index: 1;
   margin: 0px auto;
   display: flex;
+  opacity: 0;
 }
 
 .fourth-container .content {
@@ -260,4 +263,15 @@ ul li {
   bottom: 0;
   display: none;
   transition: all 0.8s ease 0s;
+}
+
+.customizer-options {
+  color: #fff;
+  background-color: #000;
+  width: 100px;
+  padding: 10px;
+  margin: 20px 5px 0 5px;
+  border: 0;
+  border-radius: 20px;
+  display: block;
 }

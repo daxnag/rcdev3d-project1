@@ -64,21 +64,6 @@ async function setupViewer(){
     // Add a popup(in HTML) with download progress when any asset is downloading.
     await viewer.addPlugin(AssetManagerBasicPopupPlugin)
 
-    // Add plugins individually.
-    // await viewer.addPlugin(GBufferPlugin)
-    // await viewer.addPlugin(new ProgressivePlugin(32))
-    // await viewer.addPlugin(new TonemapPlugin(!viewer.useRgbm))
-    // await viewer.addPlugin(GammaCorrectionPlugin)
-    // await viewer.addPlugin(SSRPlugin)
-    // await viewer.addPlugin(SSAOPlugin)
-    // await viewer.addPlugin(DiamondPlugin)
-    // await viewer.addPlugin(FrameFadePlugin)
-    // await viewer.addPlugin(GLTFAnimationPlugin)
-    // await viewer.addPlugin(GroundPlugin)
-    // await viewer.addPlugin(BloomPlugin)
-    // await viewer.addPlugin(TemporalAAPlugin)
-    // await viewer.addPlugin(AnisotropyPlugin)
-
     // or use this to add all main ones at once.
     await addBasePlugins(viewer)
 
@@ -94,19 +79,6 @@ async function setupViewer(){
 
     const carColor = manager.materials!.findMaterialsByName('Material.001')[0] as MeshBasicMaterial2;
     
-    //viewer.getPlugin(TonemapPlugin)!.config!.clipBackground = true
-
-    // Load an environment map if not set in the glb file
-    // await viewer.scene.setEnvironment(
-    //     await manager.importer!.importSinglePath<ITexture>(
-    //         "./assets/environment.hdr"
-    //     )
-    // );
-
-    // Add some UI for tweak and testing.
-    //const uiPlugin = await viewer.addPlugin(TweakpaneUiPlugin)
-    // Add plugins to the UI to see their settings.
-    //uiPlugin.setupPlugins<IViewerPlugin>(TonemapPlugin, CanvasSnipperPlugin)
 
     let needsUpdate = true;
 
@@ -138,8 +110,19 @@ async function setupViewer(){
                 end: "top top", scrub: true,
                 immediateRender: false
         }})        
+
+        gsap.to('.second-container', {
+            opacity: 1,
+            duration: 1.5,
+            scrollTrigger: {
+                trigger: ".second",
+                start: 'top 70%',
+                end: "top top",
+                scrub: true
+        }
+        })
                 
-        .to(position, {
+        tl.to(position, {
             x: -3.2343582239, 
             y: 1.8475005786,
             z: 7.1559944453,
@@ -153,7 +136,7 @@ async function setupViewer(){
             onUpdate
         })    
         
-        .to(target, {x: 0.7568401408, y: 0.1152113734, z: 0.9847750549,
+        tl.to(target, {x: 0.7568401408, y: 0.1152113734, z: 0.9847750549,
             scrollTrigger: {
                 trigger: ".third",
                 start:"top bottom",
@@ -161,7 +144,17 @@ async function setupViewer(){
                 immediateRender: false
         }})  
 
-        .to(position, {
+        gsap.to('.third-container', {
+            opacity: 1,
+            duration: 1,
+            scrollTrigger: {
+                trigger: ".third",
+                start: 'top 95%',
+                scrub: true
+        }
+        })
+
+        tl.to(position, {
             x: -3.2055387161, 
             y: 0.7026381468,
             z: -5.4921740888,
@@ -175,13 +168,24 @@ async function setupViewer(){
             onUpdate
         })    
         
-        .to(target, {x: 0.8998738046, y: -0.1209717878, z: 0.7912719239,
+        tl.to(target, {x: 0.8998738046, y: -0.1209717878, z: 0.7912719239,
             scrollTrigger: {
                 trigger: ".fourth",
                 start:"top bottom",
                 end: "top top", scrub: true,
                 immediateRender: false
         }})  
+
+        gsap.to('.fourth-container', {
+            opacity: 1,
+            duration: 1,
+            scrollTrigger: {
+                trigger: ".fourth",
+                start: 'top 20%',
+                end: 'top top',
+                scrub: true
+        }
+        })
     }
 
     setUpScrollAnimation();
@@ -234,6 +238,39 @@ async function setupViewer(){
 		changeColor(new Color(0xffffff).convertSRGBToLinear())
     })
 
+    document.querySelector('.no-tint')?.addEventListener('click', () => {
+
+    });
+
+    const chinBtn = document.querySelector('.no-chin');
+    const tintBtn = document.querySelector('.no-tint');
+    let withChin = true;
+    let withTint = true;
+
+    chinBtn?.addEventListener('click', (e) => {
+        if(withChin) {
+            chinBtn.innerHTML = 'No Chin';
+        } else {
+            chinBtn.innerHTML = 'With Chin';
+        }
+        withChin = !withChin;
+        let chin = viewer.scene.findObjectsByName('Object_16');
+        chin[0].visible = withChin;
+        viewer.scene.setDirty();
+    });
+
+    tintBtn?.addEventListener('click', (e) => {
+        if(withTint) {
+            tintBtn.innerHTML = 'No Tint';
+        } else {
+            tintBtn.innerHTML = 'With Tint';
+        }
+        withTint = !withTint;
+        let tint = viewer.scene.findObjectsByName('Object_18');
+        tint[0].visible = withTint;
+        viewer.scene.setDirty();
+    });
+
     exitButton.addEventListener('click', () => {
         gsap.to(position, {
             x: -3.2055387161, 
@@ -242,7 +279,9 @@ async function setupViewer(){
             duration: 2, ease: "power3.inOut", 
         onUpdate})
         gsap.to(target, {x: 0.8998738046, y: -0.1209717878, z: 0.7912719239, duration: 2, ease: "power3.inOut", onUpdate})
-
+        
+        changeColor(new Color(0x0f4290).convertSRGBToLinear())
+        
         viewer.scene.activeCamera.setCameraOptions({controlsEnabled: false})
         sections.style.display = "contents"
         mainContainer.style.pointerEvents = "none"
