@@ -212,7 +212,12 @@ async function setupViewer(){
     const sections = document.querySelector('.container') as HTMLElement
     const mainContainer = document.getElementById('webgi-canvas-container') as HTMLElement
 
+    let withChin = true;
+    let withTint = true;
+
 	document.querySelector('.customize')?.addEventListener('click', () => {
+        withChin = true;
+        withTint = true;
         sections.style.display = "none"
         mainContainer.style.pointerEvents = "all"
         document.body.style.cursor = "grab"
@@ -244,14 +249,12 @@ async function setupViewer(){
 
     const chinBtn = document.querySelector('.no-chin');
     const tintBtn = document.querySelector('.no-tint');
-    let withChin = true;
-    let withTint = true;
-
+    
     chinBtn?.addEventListener('click', (e) => {
         if(withChin) {
-            chinBtn.innerHTML = 'No Chin';
-        } else {
             chinBtn.innerHTML = 'With Chin';
+        } else {
+            chinBtn.innerHTML = 'No Chin';
         }
         withChin = !withChin;
         let chin = viewer.scene.findObjectsByName('Object_16');
@@ -261,9 +264,9 @@ async function setupViewer(){
 
     tintBtn?.addEventListener('click', (e) => {
         if(withTint) {
-            tintBtn.innerHTML = 'No Tint';
-        } else {
             tintBtn.innerHTML = 'With Tint';
+        } else {
+            tintBtn.innerHTML = 'No Tint';
         }
         withTint = !withTint;
         let tint = viewer.scene.findObjectsByName('Object_18');
@@ -281,6 +284,9 @@ async function setupViewer(){
         gsap.to(target, {x: 0.8998738046, y: -0.1209717878, z: 0.7912719239, duration: 2, ease: "power3.inOut", onUpdate})
         
         changeColor(new Color(0x0f4290).convertSRGBToLinear())
+
+        viewer.scene.findObjectsByName('Object_16')[0].visible = true;
+        viewer.scene.findObjectsByName('Object_18')[0].visible = true;
         
         viewer.scene.activeCamera.setCameraOptions({controlsEnabled: false})
         sections.style.display = "contents"
