@@ -243,10 +243,6 @@ async function setupViewer(){
 		changeColor(new Color(0xffffff).convertSRGBToLinear())
     })
 
-    document.querySelector('.no-tint')?.addEventListener('click', () => {
-
-    });
-
     const chinBtn = document.querySelector('.no-chin');
     const tintBtn = document.querySelector('.no-tint');
     
